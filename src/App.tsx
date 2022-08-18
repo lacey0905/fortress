@@ -8,9 +8,11 @@ const cx = classNames.bind(styles);
 
 export function App() {
   const [currentModel, setCurrentModel] = useState(0);
-
-  const [gameStart, setGameStart] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [gameDisplay, setGameDisplay] = useState(true);
+  const [choiceView, setChoiceView] = useState(true);
   const [gameEnd, setGameEnd] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { unityProvider, sendMessage, addEventListener, removeEventListener } =
     useUnityContext({
@@ -21,39 +23,57 @@ export function App() {
     });
 
   function GameStart() {
-    setGameStart(true);
+    setReady(true);
+    setGameDisplay(true);
+    setChoiceView(false);
     sendMessage('GameManager', 'GameStart', currentModel);
   }
 
   const handleGameOver = useCallback(() => {
-    setGameStart(false);
-    setGameEnd(true);
+    setReady(false);
+    setGameDisplay(false);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setGameEnd(true);
+    }, 1500);
+  }, []);
+
+  const handleLoading = useCallback(() => {
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     addEventListener('CallReact', handleGameOver);
+    addEventListener('CallLoading', handleLoading);
     return () => {
       removeEventListener('CallReact', handleGameOver);
+      removeEventListener('CallLoading', handleLoading);
     };
-  }, [addEventListener, removeEventListener, handleGameOver]);
+  }, [addEventListener, removeEventListener]);
 
   return (
     <div className={cx('container')}>
-      {gameEnd && (
-        <div className={cx('gameEnd')}>
+      {loading && <div className={cx('loading')}>Loading...</div>}
+      {!loading && gameEnd && !choiceView && (
+        <div className={cx('gameEnd')} data-temp={gameEnd}>
           <h2 className={cx('title')}>당신의 승리 입니다!</h2>
           <button
             className={cx('reGameButton')}
             onClick={() => {
-              setGameEnd(false);
-              setGameStart(false);
+              setLoading(true);
+              setTimeout(() => {
+                setLoading(false);
+                setGameEnd(false);
+                setChoiceView(true);
+              }, 1500);
             }}
           >
             게임 다시하기
           </button>
         </div>
       )}
-      {!gameStart && !gameEnd && (
+      {!loading && choiceView && (
         <div className={cx('character')} data-on={currentModel}>
           <h2 className={cx('title')}>지금은 React 입니다.</h2>
           <p className={cx('subTitle')}>탱크를 선택 하세요.</p>
@@ -82,15 +102,16 @@ export function App() {
             type="button"
             className={cx('gameStartButton')}
             onClick={GameStart}
-            data-show={gameStart}
           >
             GAME START
           </button>
         </div>
       )}
       <div className={cx('gameView')}>
-        {gameStart && <h2 className={cx('title')}>지금은 Unity 입니다.</h2>}
-        {gameStart && (
+        {gameDisplay && !loading && ready && (
+          <h2 className={cx('title')}>지금은 Unity 입니다.</h2>
+        )}
+        {gameDisplay && !loading && ready && (
           <p className={cx('subTitle')}>
             빨간색 : HP
             <br />
@@ -99,14 +120,16 @@ export function App() {
             노란색 : 스테미너
           </p>
         )}
-        <Unity
-          unityProvider={unityProvider}
-          style={{
-            width: '1280px',
-            height: '720px',
-            display: gameStart ? 'block' : 'none',
-          }}
-        />
+        <div data-unity-state={ready}>
+          <Unity
+            unityProvider={unityProvider}
+            style={{
+              width: '1280px',
+              height: '720px',
+              display: gameDisplay ? 'block' : 'none',
+            }}
+          />
+        </div>
       </div>
     </div>
   );

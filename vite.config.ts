@@ -4,6 +4,7 @@ import vitePluginReact from '@vitejs/plugin-react';
 export default defineConfig({
   base: './',
   build: {
+    outDir: './docs',
     manifest: false,
     sourcemap: true,
     assetsDir: '', // 빌드한 JS, CSS를 index.html과 같은 루트에 생성.
