@@ -113,11 +113,7 @@ export function App() {
         )}
         {gameDisplay && !loading && ready && (
           <p className={cx('subTitle')}>
-            빨간색 : HP
-            <br />
-            초록색 : 파워
-            <br />
-            노란색 : 스테미너
+            빨간색 : HP / 초록색 : 파워 / 노란색 : 스테미너
           </p>
         )}
         <div data-unity-state={ready}>
