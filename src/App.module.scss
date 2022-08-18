@@ -1,0 +1,98 @@
+@import './styles/reset';
+
+.container {
+  background-color: #090920;
+  overflow: hidden;
+}
+
+.gameEnd {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  .reGameButton {
+    display: block;
+    margin: 0 auto;
+    padding: 25px 80px;
+    font-size: 50px;
+    background-color: #135576;
+    border-radius: 100px;
+    margin-top: 50px;
+    cursor: pointer;
+  }
+}
+
+.character {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  &[data-on='0'] {
+    [data-tank='0'] {
+      border: solid 5px #f2ff00;
+    }
+  }
+  &[data-on='1'] {
+    [data-tank='1'] {
+      border: solid 5px #f2ff00;
+    }
+  }
+  &[data-on='2'] {
+    [data-tank='2'] {
+      border: solid 5px #f2ff00;
+    }
+  }
+  .tank {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    background: url('/img/tank_01.png') no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    margin: 0 50px;
+    box-sizing: border-box;
+    &[data-tank='0'] {
+      background-image: url('/img/tank_01.png');
+    }
+    &[data-tank='1'] {
+      background-image: url('/img/tank_02.png');
+    }
+    &[data-tank='2'] {
+      background-image: url('/img/tank_03.png');
+    }
+  }
+}
+
+.gameStartButton {
+  display: block;
+  margin: 0 auto;
+  padding: 25px 80px;
+  font-size: 50px;
+  background-color: #135576;
+  border-radius: 100px;
+  margin-top: 100px;
+  cursor: pointer;
+}
+
+.gameView {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  font-size: 60px;
+  font-weight: 500;
+  padding: 0 0 30px 0;
+  text-align: center;
+}
+
+.subTitle {
+  font-size: 30px;
+  padding: 0 0 50px 0;
+  text-align: center;
+  line-height: 1.5em;
+}
