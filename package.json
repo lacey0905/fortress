@@ -1,15 +1,14 @@
 {
-  "name": "teaserweb",
+  "name": "React",
   "version": "1.0.0",
-  "description": "intellaX",
+  "description": "React",
   "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
   },
   "repository": {
-    "type": "git",
-    "url": "https://git.nwz.kr/cow/front-end/teaserweb.git"
+    "type": "git"
   },
   "author": "",
   "license": "ISC",
